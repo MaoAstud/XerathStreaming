@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model analitica {
+  idAnalitica             Int      @id
+  idStream                Int
+  promedioVisualizaciones Float    @default(0)
+  audienciaMaxima         Int      @default(0)
+  inicio                  DateTime @db.Timestamptz(6)
+  fin                     DateTime @db.Timestamptz(6)
+  stream                  stream   @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-analitica")
+}
+
+model canal {
+  idCanal          Int          @id
+  nombreCanal      String       @default("undefined") @db.VarChar(15)
+  descripcionCanal String       @default("undefined")
+  billeteraCanal   String       @default("undefined") @db.VarChar(50)
+  seguidor         seguidor[]
+  stream           stream[]
+  suscriptor       suscriptor[]
+}
+
+model chat {
+  idChat        Int       @id
+  idUsuario     Int
+  idStream      Int
+  comentario    String    @default("undefined")
+  marcaDeTiempo DateTime? @db.Timestamptz(6)
+  stream        stream    @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-chat")
+  usuario       usuario   @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "usuario-chat")
+}
+
+model notificacion {
+  idNotificacion Int      @id
+  idStream       Int
+  idUsuario      Int
+  abierta        Boolean  @default(false)
+  horaAbierta    DateTime @db.Timestamptz(6)
+  stream         stream   @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-notificacion")
+  usuario        usuario  @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "usuario-notificacion")
+}
+
+model pago {
+  idPago             Int          @id
+  billeteraAcreedora String       @default("undefined") @db.VarChar(50)
+  smartContractID    String       @default("undefined") @db.VarChar(50)
+  fechaPago          DateTime     @db.Timestamptz(6)
+  cantidadMeses      Int
+  suscriptor         suscriptor[]
+}
+
+model seguidor {
+  idSeguidor Int     @id
+  idUsuario  Int
+  idCanal    Int
+  activo     Boolean @default(true)
+  canal      canal   @relation(fields: [idCanal], references: [idCanal], onDelete: NoAction, onUpdate: NoAction, map: "canal-seguidor")
+  usuario    usuario @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-seguidor")
+}
+
+model stream {
+  idStream        Int            @id
+  smartContractID String         @default("undefined") @db.VarChar(50)
+  idCanal         Int
+  titulo          String         @default("undefined") @db.VarChar(15)
+  descripcion     String         @default("undefined")
+  estado          Boolean        @default(true)
+  visualizaciones Int            @default(0)
+  analitica       analitica[]
+  chat            chat[]
+  notificacion    notificacion[]
+  canal           canal          @relation(fields: [idCanal], references: [idCanal], onUpdate: Restrict, map: "canal-stream")
+  video           video[]
+}
+
+model suscriptor {
+  idSuscriptor Int     @id
+  idUsuario    Int
+  idCanal      Int
+  idPago       Int
+  activo       Boolean @default(true)
+  canal        canal   @relation(fields: [idCanal], references: [idCanal], onDelete: NoAction, onUpdate: NoAction, map: "canal-suscriptor")
+  pago         pago    @relation(fields: [idPago], references: [idPago], onUpdate: Restrict, map: "pago-suscriptor")
+  usuario      usuario @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-suscriptor")
+}
+
+model usuario {
+  idUsuario     Int            @id
+  nombreUsuario String         @default("undefined") @db.VarChar(15)
+  email         String         @default("undefined") @db.VarChar(30)
+  contrasena    String         @default("undefined") @db.VarChar(25)
+  chat          chat[]
+  notificacion  notificacion[]
+  seguidor      seguidor[]
+  suscriptor    suscriptor[]
+}
+
+model video {
+  idVideo            Int    @id
+  idStream           Int
+  miniatura          Bytes
+  streamDecodificado Bytes
+  stream             stream @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "video-stream")
+}
