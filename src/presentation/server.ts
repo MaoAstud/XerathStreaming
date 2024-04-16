@@ -11,6 +11,8 @@ export class Server{
 
     async start(){
 
+        this.app.use(express.json());
+
         this.app.use(express.static('../../public'));
 
         this.app.use(this.routes);

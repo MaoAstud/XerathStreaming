@@ -8,6 +8,7 @@ export class CrudRoutes{
         const crudController = new CrudController();
 
         router.get('/', crudController.getCrud);
+        router.post('/crear/usuario', crudController.createUsuario);
 
         return router;
     }
