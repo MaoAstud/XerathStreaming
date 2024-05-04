@@ -5,15 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsnd --respawn src/app.ts",
+    "dev": "tsnd --respawn --clear src/app.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js"
   },
   "author": "Mao Astudillo, Alanis Barba",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.12.1",
-    "express": "^4.17.21"
+    "@prisma/client": "^5.13.0",
+    "express": "^4.17.21",
+    "prisma": "^5.13.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

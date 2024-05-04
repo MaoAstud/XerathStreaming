@@ -8,17 +8,17 @@ datasource db {
 }
 
 model analitica {
-  idAnalitica             Int      @id
+  idAnalitica             Int      @id @default(autoincrement())
   idStream                Int
   promedioVisualizaciones Float    @default(0)
   audienciaMaxima         Int      @default(0)
   inicio                  DateTime @db.Timestamptz(6)
   fin                     DateTime @db.Timestamptz(6)
-  stream                  stream   @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-analitica")
+  stream                  stream   @relation(fields: [idStream], references: [idStream], onUpdate: Restrict, map: "stream-analitica")
 }
 
 model canal {
-  idCanal          Int          @id
+  idCanal          Int          @id @default(autoincrement())
   nombreCanal      String       @default("undefined") @db.VarChar(15)
   descripcionCanal String       @default("undefined")
   billeteraCanal   String       @default("undefined") @db.VarChar(50)
@@ -28,27 +28,27 @@ model canal {
 }
 
 model chat {
-  idChat        Int       @id
+  idChat        Int       @id @default(autoincrement())
   idUsuario     Int
   idStream      Int
   comentario    String    @default("undefined")
   marcaDeTiempo DateTime? @db.Timestamptz(6)
-  stream        stream    @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-chat")
-  usuario       usuario   @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "usuario-chat")
+  stream        stream    @relation(fields: [idStream], references: [idStream], onUpdate: Restrict, map: "stream-chat")
+  usuario       usuario   @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-chat")
 }
 
 model notificacion {
-  idNotificacion Int      @id
+  idNotificacion Int      @id @default(autoincrement())
   idStream       Int
   idUsuario      Int
   abierta        Boolean  @default(false)
   horaAbierta    DateTime @db.Timestamptz(6)
-  stream         stream   @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "stream-notificacion")
-  usuario        usuario  @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "usuario-notificacion")
+  stream         stream   @relation(fields: [idStream], references: [idStream], onUpdate: Restrict, map: "stream-notificacion")
+  usuario        usuario  @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-notificacion")
 }
 
 model pago {
-  idPago             Int          @id
+  idPago             Int          @id @default(autoincrement())
   billeteraAcreedora String       @default("undefined") @db.VarChar(50)
   smartContractID    String       @default("undefined") @db.VarChar(50)
   fechaPago          DateTime     @db.Timestamptz(6)
@@ -57,16 +57,16 @@ model pago {
 }
 
 model seguidor {
-  idSeguidor Int     @id
+  idSeguidor Int     @id @default(autoincrement())
   idUsuario  Int
   idCanal    Int
   activo     Boolean @default(true)
-  canal      canal   @relation(fields: [idCanal], references: [idCanal], onDelete: NoAction, onUpdate: NoAction, map: "canal-seguidor")
+  canal      canal   @relation(fields: [idCanal], references: [idCanal], onUpdate: Restrict, map: "canal-seguidor")
   usuario    usuario @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-seguidor")
 }
 
 model stream {
-  idStream        Int            @id
+  idStream        Int            @id @default(autoincrement())
   smartContractID String         @default("undefined") @db.VarChar(50)
   idCanal         Int
   titulo          String         @default("undefined") @db.VarChar(15)
@@ -81,18 +81,18 @@ model stream {
 }
 
 model suscriptor {
-  idSuscriptor Int     @id
+  idSuscriptor Int     @id @default(autoincrement())
   idUsuario    Int
   idCanal      Int
   idPago       Int
   activo       Boolean @default(true)
-  canal        canal   @relation(fields: [idCanal], references: [idCanal], onDelete: NoAction, onUpdate: NoAction, map: "canal-suscriptor")
+  canal        canal   @relation(fields: [idCanal], references: [idCanal], onUpdate: Restrict, map: "canal-suscriptor")
   pago         pago    @relation(fields: [idPago], references: [idPago], onUpdate: Restrict, map: "pago-suscriptor")
   usuario      usuario @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-suscriptor")
 }
 
 model usuario {
-  idUsuario     Int            @id
+  idUsuario     Int            @id @default(autoincrement())
   nombreUsuario String         @default("undefined") @db.VarChar(15)
   email         String         @default("undefined") @db.VarChar(30)
   contrasena    String         @default("undefined") @db.VarChar(25)
@@ -103,9 +103,9 @@ model usuario {
 }
 
 model video {
-  idVideo            Int    @id
+  idVideo            Int    @id @default(autoincrement())
   idStream           Int
   miniatura          Bytes
   streamDecodificado Bytes
-  stream             stream @relation(fields: [idStream], references: [idStream], onDelete: NoAction, onUpdate: NoAction, map: "video-stream")
+  stream             stream @relation(fields: [idStream], references: [idStream], onUpdate: Restrict, map: "video-stream")
 }
