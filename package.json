@@ -12,11 +12,16 @@
   "author": "Mao Astudillo, Alanis Barba",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.13.0",
-    "express": "^4.17.21",
+    "@prisma/client": "^5.14.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
     "prisma": "^5.13.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
     "rimraf": "^5.0.5",

@@ -22,6 +22,9 @@ model canal {
   nombreCanal      String       @default("undefined") @db.VarChar(15)
   descripcionCanal String       @default("undefined")
   billeteraCanal   String       @default("undefined") @db.VarChar(50)
+  idUsuario        Int          @default(1)
+  bannerCanal      Bytes?
+  usuario          usuario      @relation(fields: [idUsuario], references: [idUsuario], onUpdate: Restrict, map: "usuario-canal")
   seguidor         seguidor[]
   stream           stream[]
   suscriptor       suscriptor[]
@@ -96,6 +99,8 @@ model usuario {
   nombreUsuario String         @default("undefined") @db.VarChar(15)
   email         String         @default("undefined") @db.VarChar(30)
   contrasena    String         @default("undefined") @db.VarChar(25)
+  imagenUsuario Bytes?
+  canal         canal[]
   chat          chat[]
   notificacion  notificacion[]
   seguidor      seguidor[]

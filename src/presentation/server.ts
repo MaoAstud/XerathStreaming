@@ -1,15 +1,17 @@
 import express, { Router } from 'express';
-import { AppRoutes } from './routes';
+import cors from 'cors';
 
 export class Server{
     private app = express();
     private routes:Router;
 
+    port = 9780;
     constructor(routes:Router){
         this.routes = routes;
     }
 
     async start(){
+        this.app.use(cors()); 
 
         this.app.use(express.json());
 
@@ -17,6 +19,7 @@ export class Server{
 
         this.app.use(this.routes);
 
-        this.app.listen(9780);
+        this.app.listen(this.port);
+        console.log("Running on "+this.port);
     }
 }
