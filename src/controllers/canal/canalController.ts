@@ -61,10 +61,9 @@ export class CanalController{
     };
 
     public buscarCanales = async (req: Request, res: Response) => {
-        const terminoBusqueda = req.params.termino;
         try {
 
-            const result = await this.canalService.buscarCanalesPorNombre(terminoBusqueda);
+            const result = await this.canalService.buscarCanalesPorNombre();
 
             if (!result.success) {
                 return res.status(result.status).json({ message: result.message, errors: result.errors });

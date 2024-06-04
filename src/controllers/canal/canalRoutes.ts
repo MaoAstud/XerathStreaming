@@ -11,7 +11,7 @@ export class CanalRoutes{
         router.post('/', canalController.createCanal);
         router.put('/:id', canalController.updateCanal);
         router.get('/:id', canalController.canalById);
-        router.get('/buscar/:termino', canalController.buscarCanales);
+        router.get('/buscar/all', canalController.buscarCanales);
 
         return router;
     }

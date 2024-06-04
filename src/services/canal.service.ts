@@ -48,8 +48,8 @@ export class CanalService {
     }
     try {
 
-      const canal = await prisma.canal.findUnique({
-        where: { idCanal },
+      const canal = await prisma.canal.findFirstOrThrow({
+        where: { idUsuario: idCanal },
       });
 
       if (!canal) {
@@ -94,15 +94,9 @@ export class CanalService {
     }
   }
 
-  async buscarCanalesPorNombre(terminoBusqueda: string): Promise<any> {
+  async buscarCanalesPorNombre(): Promise<any> {
     try {
       const canales = await prisma.canal.findMany({
-        where: {
-          nombreCanal: {
-            contains: terminoBusqueda, // Buscar nombres que contengan el término de búsqueda
-            mode: 'insensitive', // Hacer la búsqueda insensible a mayúsculas y minúsculas
-          },
-        },
       });
 
       return { success: true, status: 200, message: 'Canales encontrados', canales };
