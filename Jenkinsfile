@@ -12,9 +12,9 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MaoAstud/XerathStreaming'
             }
         }
-        stage('Install Dependencies') {
+        stage('Print Working Directory') {
             steps {
-                sh 'npm install'
+                sh 'pwd'
             }
         }
     }
