@@ -1,7 +1,10 @@
 pipeline {
     agent any
 
-    
+    environment {
+        NODEJS_HOME = tool name: 'xerathApi' // Usa el nombre que configuraste en NodeJS Tool Configuration
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+    }
 
     stages {
         stage('Checkout') {
@@ -9,9 +12,14 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MaoAstud/XerathStreaming'
             }
         }
-        stage('Print Working Directory') {
+        stage('Install Dependencies') {
             steps {
-                sh 'pwd'
+                bat 'npm install'
+            }
+        }
+        stage('Run API Tests') {
+            steps {
+                bat 'npx newman run C:/Users/mao_a/OneDrive/Documentos/6to/desarrollo/xerath.postman_collection.json'
             }
         }
     }
