@@ -17,16 +17,15 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Run Tests') {
+        stage('Run API Tests') {
             steps {
-                sh 'npm test'
+                sh 'newman run C:/Users/mao_a/OneDrive/Documentos/6to/desarrollo/xerath.postman_collection.json'
             }
         }
     }
 
     post {
         always {
-            junit '**/test-results.xml'
             cleanWs()
         }
         success {
