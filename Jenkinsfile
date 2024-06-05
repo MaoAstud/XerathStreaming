@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Run API Tests') {
             steps {
-                sh 'newman run C:/Users/mao_a/OneDrive/Documentos/6to/desarrollo/xerath.postman_collection.json'
+                sh 'newman run ./xerath.postman_collection.json'
             }
         }
     }
