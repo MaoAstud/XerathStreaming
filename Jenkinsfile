@@ -28,15 +28,5 @@ pipeline {
         always {
             cleanWs()
         }
-        success {
-            mail to: 'mnastudillo@puce.edu.ec',
-                 subject: "Build Successful: ${currentBuild.fullDisplayName}",
-                 body: "Good news! The build ${currentBuild.fullDisplayName} was successful."
-        }
-        failure {
-            mail to: 'mnastudillo@puce.edu.ec',
-                 subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                 body: "Something is wrong. The build ${currentBuild.fullDisplayName} failed. Please check Jenkins for more details."
-        }
     }
 }
